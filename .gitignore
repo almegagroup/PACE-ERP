@@ -26,6 +26,7 @@ Thumbs.db
 !.vscode/settings.json
 !.vscode/extensions.json
 
-# Env
+# dotenv / local secret files
 .env
 .env.*
+secrets.local.json

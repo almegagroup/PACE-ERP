@@ -1,0 +1,70 @@
+name: CI/CD – Main Branch (ID-0.1F)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Build Web App (apps/web)
+        run: |
+          cd apps/web
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+          npm run build
+
+      - name: Functions – install only (placeholder)
+        run: |
+          if [ -d functions ]; then
+            cd functions
+            if [ -f package-lock.json ]; then
+              npm ci
+            else
+              npm install
+            fi
+            echo "TODO: add lint/test commands for functions later"
+          fi
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: success()
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Firebase Deploy (Hosting + Functions)
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          if [ -z "$FIREBASE_TOKEN" ]; then
+            echo "FIREBASE_TOKEN is not set in GitHub Secrets. Failing deploy step."
+            exit 1
+          fi
+
+          firebase deploy --only hosting,functions --project sriya-0504-df718

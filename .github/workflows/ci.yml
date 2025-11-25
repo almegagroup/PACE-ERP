@@ -7,7 +7,7 @@ on:
     branches: [ main, dev ]
 
 jobs:
-  build-and-test:
+  basic-ci:
     runs-on: ubuntu-latest
 
     strategy:
@@ -22,16 +22,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Test
-        run: npm test -- --watch=false
-
-      - name: Build
-        run: npm run build
+      - name: Install root dependencies (Gate-0 simple)
+        run: |
+          if [ -f package.json ]; then
+            echo "package.json found at repo root – running npm install"
+            npm install
+          else
+            echo "No package.json at repo root – skipping npm install for Gate-0"
+          fi

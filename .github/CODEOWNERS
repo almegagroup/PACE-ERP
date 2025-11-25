@@ -1,0 +1,26 @@
+# === PACE-ERP CODEOWNERS (ID-0.1A) ===
+# All changes must be reviewed by core owners.
+
+# Core Admin / Architecture Owners
+* @ankan-jyoti @pace-core-admin
+
+# Protected folders — requires review from architecture team
+/apps/web/              @pace-core-admin @ankan-jyoti
+/functions/app/         @pace-core-admin @ankan-jyoti
+/functions/logger/      @pace-core-admin @ankan-jyoti
+/functions/health/      @pace-core-admin @ankan-jyoti
+
+/packages/              @pace-core-admin @ankan-jyoti
+/infra/                 @pace-core-admin @ankan-jyoti
+/adr/                   @pace-core-admin @ankan-jyoti
+
+# GitHub workflows — super protected
+/.github/workflows/     @pace-core-admin @ankan-jyoti
+
+# Firebase config
+/firebase.json          @pace-core-admin @ankan-jyoti
+
+# Any config or env-like file (future proofing)
+*.config.js             @pace-core-admin @ankan-jyoti
+*.config.ts             @pace-core-admin @ankan-jyoti
+*.env                   @pace-core-admin @ankan-jyoti
